@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res, next)=> {
-  res.render('index');
+
+// Discord authentication route
+router.get("/", (req, res) => {
+  res.render("index");
 });
+
+router.get("/login", (req, res) => {
+  res.render("main/login");
+});
+
+router.get("/signup", (req, res) => {
+  res.render("main/signup");
+});
+
 
 module.exports = router;

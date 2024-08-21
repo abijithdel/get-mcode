@@ -35,3 +35,16 @@ body{
   background-color: rgb(21, 37, 70);
   border-radius: 10px;
 }
+
+/* home page  */
+.index-main-img{
+  width: 100%;
+  height: 86vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../images/index-page-bg.png');
+  background-size: cover;
+  background-position: center;
+  flex-direction: column;
+}
