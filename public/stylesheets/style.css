@@ -1,8 +1,37 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
+  box-sizing: border-box;
+}
+body{
+  margin: 0;
+  padding: 0;
+  background-color: rgb(19, 19, 19);
+  color: white;
+  font-family: roboto;
 }
 
-a {
-  color: #00B7FF;
+/* nav bar */
+.navbar{
+  background-color: rgb(15, 20, 31);
+}
+.navbar a{
+  text-decoration: none;
+}
+
+.navbar a h2::first-letter{
+  color: red;
+  font-size: 50px;
+}
+.navbar .dropdown-menu{
+  background-color: rgb(15, 27, 51);
+}
+.navbar .dropdown-item:hover{
+  background-color: rgb(21, 37, 70);
+}
+.navbar .navbar-nav .nav-item{
+  margin-right: 15px;
+}
+.navbar .navbar-nav .nav-item:hover{
+  background-color: rgb(21, 37, 70);
+  border-radius: 10px;
 }
