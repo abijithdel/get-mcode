@@ -57,6 +57,7 @@
     <div class="signin">
 
         <div class="content">
+            <h2>Sign In</h2>
             {{#if emailError }}
             {{emailError}}
             {{/if}}
@@ -64,7 +65,6 @@
             {{#if passError}}
             {{passError}}
             {{/if}}
-            <h2>Sign In</h2>
             <form action="/signup" method="post" class="form">
 
                 <div class="inputBox">
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="#">Forgot Password</a> <a href="#">Signup</a>
+                    <a href="#">Forgot Password</a> <a href="/login">Signin</a>
                 </div>
 
 

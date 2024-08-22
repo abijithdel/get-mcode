@@ -3,13 +3,6 @@ const router = express.Router();
 const User = require('../helper/userDB')
 var bcrypt = require('bcrypt');
 
-const userlogin=(req,res,nest)=>{
-  if(req.session.login){
-    nest()
-  }else{
-    res.redirect('/login')
-  }
-}
 
 router.get("/", (req, res) => {
   res.render("index",{user:req.session.userSession});
@@ -101,4 +94,11 @@ router.get('/logout', (req, res) => {
   });
 });
 
+router.get('/documentation', (req,res)=>{
+  res.render('main/documentation',{ user:req.session.userSession })
+})
+
+router.get('/createstore', (req,res)=>{
+  res.render('main/createstore',{ user:req.session.userSession })
+})
 module.exports = router;
