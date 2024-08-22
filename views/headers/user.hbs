@@ -26,7 +26,14 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href=""><i class="bi bi-cart"></i> CREATE STORE</a>
                 </li>
-
+                {{#if user}}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href=""><i class="bi bi-person"></i> {{user.fname}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/logout">LOGOUT</a>
+                </li>
+                {{else}}
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/login"><i class="bi bi-person"></i> Log in</a>
                 </li>
@@ -34,6 +41,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/signup"><i class="bi bi-person"></i> Sign up</a>
                 </li>
+                {{/if}}
             </ul>
         </div>
     </div>

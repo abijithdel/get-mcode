@@ -136,7 +136,7 @@ section .signin .content .form .inputBox i
   color: #0f0;
   font-weight: 600;
 }
-.signin .content .form .inputBox a[type="submit"]
+.signin .content .form .inputBox input[type="submit"]
 {
   padding: 10px;
   background: #0f0;
@@ -145,9 +145,6 @@ section .signin .content .form .inputBox i
   font-size: 1.35em;
   letter-spacing: 0.05em;
   cursor: pointer;
-  width: 320px;
-  text-align: center;
-  text-decoration: none;
 }
 input[type="submit"]:active
 {

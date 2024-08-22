@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/stylesheets/auth.css">
+<title>SIGN UP</title>
 <section>
     <span></span> <span></span> <span></span> <span></span> <span></span>
     <span></span> <span></span> <span></span> <span></span> <span></span>
@@ -54,10 +55,18 @@
     <span></span> <span></span> <span></span> <span></span> <span></span>
 
     <div class="signin">
-        <div class="content">
-            <h2>Sign In</h2>
 
-            <div class="form">
+        <div class="content">
+            {{#if emailError }}
+            {{emailError}}
+            {{/if}}
+
+            {{#if passError}}
+            {{passError}}
+            {{/if}}
+            <h2>Sign In</h2>
+            <form action="/signup" method="post" class="form">
+
                 <div class="inputBox">
                     <input type="text" name="fname" required /> <i>irst Name</i>
                 </div>
@@ -75,7 +84,7 @@
                 </div>
 
                 <div class="inputBox">
-                    <input type="email" name="cpass" required /> <i>Confirm Password</i>
+                    <input type="password" name="cpass" required /> <i>Confirm Password</i>
                 </div>
 
                 <div class="links">
@@ -84,9 +93,10 @@
 
 
                 <div class="inputBox">
-                    <a href="" type="submit" value="Login">Login</a>
+                    <input type="submit" value="Login" />
                 </div>
-            </div>
+
+            </form>
         </div>
     </div>
 </section>
