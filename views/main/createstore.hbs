@@ -1,0 +1,20 @@
+<title>Create Store</title>
+
+<section class="container">
+    <div class="store-page">
+        <div class="img-div">
+            <img src="/images/srore-sm-img.png" alt="" style="height: 450px; width: 450px; border-radius: 9px;">
+        </div>
+        <div class="main-store">
+            <h1>Create Your Server Store</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it</p>
+            <span>Free One Month!</span>
+            <br>
+            {{#each newPrice}}
+            <div class="btn-div">
+                <a href="/createstore-form" class="btn"> {{this.btnName}}</a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>

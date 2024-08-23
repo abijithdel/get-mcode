@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var Price = require('../helper/price')
 
 const userlogin = (req, res, nest) => {
   if (req.session.login) {
@@ -29,5 +30,39 @@ router.get("/", userlogin, function (req, res, next) {
     }
   );
 });
+
+router.get("/update-price", userlogin, function (req, res, next) {
+  checkRole(
+    req.session.userSession.role,
+    (admin) => {
+      res.render('admin/updatePrice',{admin})
+    },
+    () => {
+      res.redirect("/");
+    }
+  );
+});
+
+router.post('/update-price', async (req, res) => {
+  try {
+    var { price, btnName } = req.body;  // Use btnName to match the schema
+
+    const count = await Price.countDocuments({});
+    if (count <= 0) {
+      var newPrice = new Price({ price, btnName });  // Use btnName here
+      await newPrice.save();
+      res.redirect('/admin')
+    } else {
+      var existingPrice = await Price.findOne();
+      await Price.findByIdAndUpdate(existingPrice._id, { price, btnName }, { new: true });  // Update using btnName
+      res.redirect('/admin')
+    }
+    
+  } catch (err) {
+    console.log(err);
+    res.send('Server error');
+  }
+});
+
 
 module.exports = router;

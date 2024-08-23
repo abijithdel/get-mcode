@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require('../helper/userDB')
 var bcrypt = require('bcrypt');
-
+var Price = require('../helper/price')
 
 router.get("/", (req, res) => {
   res.render("index",{user:req.session.userSession});
@@ -98,7 +98,22 @@ router.get('/documentation', (req,res)=>{
   res.render('main/documentation',{ user:req.session.userSession })
 })
 
-router.get('/createstore', (req,res)=>{
-  res.render('main/createstore',{ user:req.session.userSession })
+router.get('/createstore', async (req,res)=>{
+  try{
+    var newPrice = await Price.find()
+    res.render('main/createstore',{ user:req.session.userSession, newPrice})
+  }catch(err){
+    console.log(err)
+    res.send('Server error')
+  }
+})
+
+router.get('/createstore-form', (req,res)=>{
+  if (req.session.login){
+    res.render('main/store-form',{ user:req.session.userSession })
+  }else{
+    res.redirect('/login')
+  }
+  
 })
 module.exports = router;
