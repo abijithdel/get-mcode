@@ -143,10 +143,12 @@ body{
   width: 500px;
 }
 
-.store-section .store-form form textarea{
-  width: 500px;
-  height: 200px;
+.store-section .store-form form #duration{
+  width: 200px;
+  height: 40px;
+  border-radius: 6px;
 }
+
 
 .store-section .store-form{
   display: flex;
