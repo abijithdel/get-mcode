@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var Price = require('../helper/price')
-
+var Store = require('../helper/store')
+var User = require('../helper/userDB')
 const userlogin = (req, res, nest) => {
   if (req.session.login) {
     nest();
@@ -63,6 +64,33 @@ router.post('/update-price', async (req, res) => {
     res.send('Server error');
   }
 });
+
+router.get("/all-order", userlogin, async function (req, res, next) {
+  checkRole(
+    req.session.userSession.role,
+    async (admin) => {  
+      try {
+        let userEmails = [];
+        const orders = await Store.find();  // Get all orders
+
+        // Use for...of to iterate through the orders array
+        for (let order of orders) {
+          const user = await User.findById(order.userID);  // Find user by userID
+          if (user) {  
+            userEmails.push(user.email);  
+          }
+        }
+        res.render('admin/order-log', { admin, orders, userEmails });  // Pass the data to the view
+      } catch (error) {
+        next(error);  // Pass any errors to the error handler
+      }
+    },
+    () => {
+      res.redirect("/");
+    }
+  );
+});
+
 
 
 module.exports = router;

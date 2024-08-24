@@ -1,0 +1,28 @@
+<title>Order log</title>
+<section class="admin-order">
+    <div class="container">
+        <table class="table">
+            <thead class="text-white">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Order ID</th>
+                </tr>
+            </thead>
+            <tbody class="text-white">
+                {{#each orders }}
+                <tr>
+                    <th scope="row">{{@index}}</th>
+                    <td>{{lookup ../userEmails @index}}</td>
+                    <td>{{this.name}}</td>
+                    <td>Date: {{this.purchaseDate}}</td>
+                    <td>OrderId: {{this.orderId}}</td>
+                    <td><i class="bi bi-pencil"></i></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

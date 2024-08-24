@@ -8,6 +8,8 @@ const storeSchema = new Schema({
   expiryDate: { type: Date, required: true },
   orderId: { type: String, required: true },
   paymentId: { type: String, required: true },
+  serverip: { type: String ,default:'serverip.com'},
+  port: { type: Number, default:1234},
 });
 
 module.exports = mongoose.model('stors', storeSchema);

@@ -113,7 +113,10 @@ router.get("/createstore", async (req, res) => {
   if (req.session.login) {
     try {
       var newPrice = await Price.find();
-      res.render("main/createstore", { user: req.session.userSession, newPrice });
+      res.render("main/createstore", {
+        user: req.session.userSession,
+        newPrice,
+      });
     } catch (err) {
       console.log(err);
       res.send("Server error");
@@ -121,7 +124,6 @@ router.get("/createstore", async (req, res) => {
   } else {
     res.render("main/signup");
   }
-
 });
 
 router.get("/payment-form", (req, res) => {
@@ -135,7 +137,7 @@ router.get("/payment-form", (req, res) => {
 router.post("/payment-form", async (req, res) => {
   try {
     let { name, duration } = req.body;
-    let id = req.session.userSession._id
+    let id = req.session.userSession._id;
     var dbprice = await Price.find();
     if (!dbprice || dbprice.length === 0) {
       return res.status(404).send("Price not found");
@@ -147,32 +149,51 @@ router.post("/payment-form", async (req, res) => {
       currency: "INR",
       receipt: `order_rcptid_${Math.floor(Math.random() * 10000)}`, // Unique receipt ID
     });
-    res.render('main/confirmation',{order, name, duration, id, user: req.session.userSession})
+    res.render("main/confirmation", {
+      order,
+      name,
+      duration,
+      id,
+      user: req.session.userSession,
+    });
   } catch (err) {
     console.log(err);
     res.send("Server error");
   }
 });
 
-router.post('/payment/success', async (req, res) => {
+router.post("/payment/success", async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, duration, userID } = req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      name,
+      duration,
+      userID,
+    } = req.body;
 
     // Verify the payment signature
-    const crypto = require('crypto');
+    const crypto = require("crypto");
     const razorpaySecret = "BzyM7N0PxqV7HuIphsczNN53"; // Ensure you're using env variables
-    const generatedSignature = crypto.createHmac('sha256', razorpaySecret)
+    const generatedSignature = crypto
+      .createHmac("sha256", razorpaySecret)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-      .digest('hex');
+      .digest("hex");
 
     if (generatedSignature !== razorpay_signature) {
-      console.error('Invalid signature:', { generatedSignature, razorpay_signature });
-      return res.status(400).send({ message: 'Invalid signature' });
+      console.error("Invalid signature:", {
+        generatedSignature,
+        razorpay_signature,
+      });
+      return res.status(400).send({ message: "Invalid signature" });
     }
 
     // Calculate dates
     const purchaseDate = new Date();
-    const expiryDate = new Date(purchaseDate.getTime() + duration * 24 * 60 * 60 * 1000);
+    const expiryDate = new Date(
+      purchaseDate.getTime() + duration * 24 * 60 * 60 * 1000
+    );
 
     // Create new order
     const order = new Store({
@@ -186,14 +207,42 @@ router.post('/payment/success', async (req, res) => {
 
     // Save order
     await order.save();
-    res.send({ message: 'Payment successful and order processed' });
-
+    res.send({ message: "Payment successful and order processed" });
   } catch (err) {
-    console.error('Error in /payment/success route:', err);
-    res.status(500).send({ message: 'Server error' });
+    console.error("Error in /payment/success route:", err);
+    res.status(500).send({ message: "Server error" });
   }
 });
 
+router.get("/store-info", async (req, res) => {
+  if (req.session.login) {
+    try {
+      const userid = req.session.userSession._id;
 
+      // Query the database for stores that match the user's ID
+      const stores = await Store.find({ userID: userid });
+
+      if (stores.length == 0){
+        var error = 'create a Store'
+      }
+      const storeData = stores.map(store => ({
+        name: store.name,
+        userID: store.userID,
+        expiryDate: store.expiryDate,
+        id: store._id,
+        serverip: store.serverip,
+      }));
+
+
+      // Render the store-info page, passing storeData and user data
+      res.render("main/store-info", { user: req.session.userSession, storeData, error});
+    } catch (err) {
+      console.log(err);
+      res.send("Server error");
+    }
+  } else {
+    res.render("main/login");
+  }
+});
 
 module.exports = router;
