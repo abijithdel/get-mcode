@@ -191,9 +191,11 @@ router.post("/payment/success", async (req, res) => {
 
     // Calculate dates
     const purchaseDate = new Date();
-    const expiryDate = new Date(
-      purchaseDate.getTime() + duration * 24 * 60 * 60 * 1000
-    );
+    const expiryDate = new Date(purchaseDate.getTime() + 5 * 60 * 1000);
+
+    // const expiryDate = new Date(
+    //   purchaseDate.getTime() + duration * 24 * 60 * 60 * 1000
+    // );
 
     // Create new order
     const order = new Store({

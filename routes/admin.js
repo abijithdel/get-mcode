@@ -3,6 +3,7 @@ var router = express.Router();
 var Price = require('../helper/price')
 var Store = require('../helper/store')
 var User = require('../helper/userDB')
+
 const userlogin = (req, res, nest) => {
   if (req.session.login) {
     nest();
@@ -20,11 +21,26 @@ function checkRole(role, nest, back) {
 }
 
 /* GET users listing. */
-router.get("/", userlogin, function (req, res, next) {
+router.get("/", userlogin, async function (req, res, next) {
   checkRole(
     req.session.userSession.role,
-    (admin) => {
-      res.render('admin/admin',{admin})
+    async (admin) => {
+      try {
+        // Get the current date and time
+        const now = new Date();
+
+        // Find and delete documents where expiryDate is less than the current date
+        const result = await Store.deleteMany({ expiryDate: { $lt: now } });
+
+        console.log(`${result.deletedCount} expired documents deleted`);
+
+        // Fetch updated store data
+        const updatedStore = await Store.find();
+        res.render("admin/admin", { admin, store: updatedStore });
+      } catch (err) {
+        console.error("Error during cleanup or fetching data:", err);
+        res.status(500).send("Server error");
+      }
     },
     () => {
       res.redirect("/");

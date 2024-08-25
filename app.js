@@ -6,9 +6,11 @@ var logger = require('morgan');
 var exphbs = require('express-handlebars');
 var mongodb = require('./config/mongoDB')
 var session = require('express-session')
+// require('./config/cleanupCron');
 
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
+var storenRouter = require('./routes/store');
 
 var app = express();
 mongodb()
@@ -34,6 +36,7 @@ app.use(session({ secret: 'key', cookie: { maxAge: 1000 * 60 * 60 * 24 * 365 * 1
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+app.use('/store', storenRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
