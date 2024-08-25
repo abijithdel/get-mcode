@@ -326,3 +326,89 @@ body{
   border: 1px solid black;
   color: black;
 }
+
+/* razorpay-key */
+.razorpay-key {
+  width: 100%;
+  height: 100vh;
+  background-image: url('../images/index-page-bg.png');
+  background-size: cover;
+  background-position: center;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.razorpay-key .container form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  width: 100%;
+  flex-direction: column;
+}
+
+.razorpay-key .container form label{
+  font-size: 17px;
+}
+
+.razorpay-key .container form input{
+  height: 45px;
+  width: 350px;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 20px;
+}
+
+.razorpay-key .container form button{
+  background-color: transparent;
+  height: 40px;
+  width: 150px;
+  border: 1px aqua solid;
+  color: aqua;
+  border-radius: 6px;
+}
+
+.razorpay-key .container form button:hover{
+  color: black;
+  border: 1px solid black;
+  background-color: aqua;
+}
+
+/* stote server-info */
+
+#server-info .container{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+}
+
+#server-info .container .ip{
+  background-color: rgb(15, 20, 31);
+  height: 80px;
+  width: 250px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid white;
+}
+
+#server-info .container .online{
+  background-color: rgb(15, 20, 31);
+  height: 80px;
+  width: 250px;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+}
+
+@media only screen and (max-width: 768px){
+  #server-info .container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+}

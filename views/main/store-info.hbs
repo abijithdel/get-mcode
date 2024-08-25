@@ -6,6 +6,9 @@
             {{#if error}}
             <h3 class="text-center">{{error}}</h3>
             {{/if}}
+            {{#if mess}}
+            <h4 class="text-center">{{mess}}</h4>
+            {{/if}}
             {{#each storeData}}
             <div class="inner col-xl-4 col-12">
                 <h3>{{this.name}}</h3>
@@ -14,6 +17,7 @@
                 <div class="mt-2">
                     <a href="/store/sp/{{this.id}}/edit"><i class="bi bi-pencil-square m-2"></i></a>
                     <a href="/store/sp/{{this.id}}"><i class="bi bi-eye-fill m-2"></i></a>
+                    <a href="/store/sp/{{this.id}}/razorpay-keys"><i class="bi bi-currency-rupee m-2"></i></a>
                 </div>
             </div>
             {{/each}}

@@ -1,0 +1,20 @@
+<title>{{store.name}}</title>
+<section class="razorpay-key">
+    <div class="container">
+        <form action="/store/sp/{{store._id}}/razorpay-keys" method="post">
+            <div class="mt-2">
+                <label for="">Key id</label>
+                <br>
+                <input type="text" name="keyid" value="{{store.key_id}}">
+            </div>
+            <div class="mt-2">
+                <label for="key">Key Secret</label>
+                <br>
+                <input type="text" name="keysecret" value="{{store.key_secret}}">
+            </div>
+            <div class="mt-2">
+                <button type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+</section>
