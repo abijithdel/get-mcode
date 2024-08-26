@@ -1,0 +1,57 @@
+<title>Create Plan</title>
+<section class="create-plans">
+    <h1 class="text-center">Create New</h1>
+    <div class="container">
+        <form action="/store/sp/{{store._id}}/new-plan" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="name">Plan Name</label>
+                <br>
+                <input type="text" name="name" placeholder="Plan Name">
+            </div>
+            <div>
+                <label for="img">Image</label>
+                <br>
+                <input type="file" name="img">
+            </div>
+            <div id="items-container">
+                <br>
+                <button class="mt-3 mb-3" type="button" id="add-item-btn">Add items</button>
+            </div>
+            <div class="mt-2">
+                <button type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    let itemIndex = 1; // To keep track of the item index
+    
+    document.getElementById('add-item-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Create a new div to group the item inputs
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('mt-2');
+        
+        // Create the first input for item name
+        const itemNameInput = document.createElement('input');
+        itemNameInput.type = 'text';
+        itemNameInput.name = `item${itemIndex}_name`;  // Name attribute for item name
+        itemNameInput.placeholder = 'Item Name';
+        itemDiv.appendChild(itemNameInput);
+        
+        // Create the second input for item quantity
+        const itemQuantityInput = document.createElement('input');
+        itemQuantityInput.type = 'number';
+        itemQuantityInput.name = `item${itemIndex}_quantity`;  // Name attribute for item quantity
+        itemQuantityInput.placeholder = 'Quantity';
+        itemDiv.appendChild(itemQuantityInput);
+        
+        // Add the new item inputs to the items container
+        const itemsContainer = document.getElementById('items-container');
+        itemsContainer.appendChild(itemDiv);
+        
+        itemIndex++; // Increment the index for the next item
+    });
+</script>

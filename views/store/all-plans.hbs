@@ -1,0 +1,20 @@
+<title>All Plans</title>
+<section class="all-plans">
+    <h1 class="text-center m-3">All Plans</h1>
+    <div class="container mt-4">
+        {{#each plans}}
+        <div class="col-12 col-md-6 col-lg-4 rap">
+            <div class="card" style="width: 18rem; background-color: rgb(77, 77, 77);">
+                <img src="/plan-img/{{this.planImg}}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.name}}</h5>
+                    {{#each this.items}}
+                    <li class="card-text">{{this.name}}/{{this.quantity}}</li>
+                    {{/each}}
+                    <a href="" class="btn btn-danger mt-1">Delete</a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</section>

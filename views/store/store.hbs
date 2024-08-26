@@ -10,8 +10,8 @@
     <h1 class="text-center mt-3 mb-3">Server Info</h1>
     <div class="container">
         <div class="ip mb-5">
-            <p>IP: </p>
-            <p>PORT: </p>
+            <p>IP: {{store.serverip}}</p>
+            <p>PORT: {{store.port}}</p>
         </div>
         <div class="online mb-5">
             <h4>Online: </h4>
@@ -19,7 +19,23 @@
     </div>
 </section>
 <section id="store-plans">
-    <div>
-        <h1>New</h1>
+    <div class="container">
+        <h1 class="text-center m-3">Plans</h1>
+        <div class="row">
+            {{#each plans}}
+            <div class="col-12 col-md-6 col-lg-4 rap">
+                <div class="card" style="width: 18rem; background-color: rgb(77, 77, 77);">
+                    <img src="/plan-img/{{this.planImg}}" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        {{#each this.items}}
+                        <li class="card-text">{{this.name}}/{{this.quantity}}</li> 
+                        {{/each}}
+                        <a href="#" class="btn btn-primary mt-1">₹170 only</a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
     </div>
 </section>

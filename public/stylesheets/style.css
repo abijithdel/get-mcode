@@ -412,3 +412,54 @@ body{
     flex-direction: column;
   }
 }
+
+/* create-plans */
+
+.create-plans{
+  height: auto;
+  padding: 15px;
+}
+.create-plans .container {
+  background-color: black;
+  width: 340px;
+  padding: 20px;
+  border-radius: 10px;
+}
+.create-plans .container form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+}
+.create-plans .container form input{
+  height: 40px;
+  width: 300px;
+  border: 1px solid black;
+  border-radius: 6px;
+}
+
+.create-plans .container form button{
+  height: 40px;
+  width: 90px;
+  background-color: transparent;
+  color: aqua;
+  border: 1px solid aqua;
+  border-radius: 6px;
+}
+
+.create-plans .container form button:hover{
+  background-color: aqua;
+  border: 1px solid black;
+  color: black;
+}
+
+.create-plans .container form select{
+  width: 300px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+/* store-plans */
+

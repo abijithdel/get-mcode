@@ -14,6 +14,18 @@ const storeSchema = new Schema({
   bgimg: { type: String, default:'default-img.png'},
   key_id: { type: String, default:'key_id'},
   key_secret: { type: String, default:'key_secret'},
+  plans: [
+    {
+      name:{ type: String},
+      planImg:{ type: String},
+      items:[
+        {
+          name:{ type: String},
+          quantity:{ type:Number }
+        }
+      ]
+    }
+  ]
 });
 
 module.exports = mongoose.model('stors', storeSchema);

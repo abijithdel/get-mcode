@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var Store = require("../helper/store");
 const upload = require("../config/multer");
-
 const userlogin = (req, res, nest) => {
   if (req.session.login) {
     nest();
@@ -19,6 +18,7 @@ router.get("/sp/:id", async (req, res) => {
       user: req.session.userSession,
       store,
       storeStatus: true,
+      plans: store.plans,
     });
   } catch (err) {
     console.log(err);
@@ -60,7 +60,6 @@ router.post("/sp/:id/edit", upload.single("bgimg"), async (req, res) => {
       updateData.bgimg = req.file.filename;
     }
 
-
     // Update the store document
     const updatedStore = await Store.findByIdAndUpdate(storeId, updateData, {
       new: true,
@@ -84,29 +83,93 @@ router.get("/sp/:id/razorpay-keys", userlogin, async (req, res) => {
   const storeId = req.params.id;
   const store = await Store.findById(storeId);
   if (userid == store.userID) {
-    res.render("store/razorpay-key",{user: req.session.userSession, store});
-  }else{
-    res.redirect('/')
+    res.render("store/razorpay-key", { user: req.session.userSession, store });
+  } else {
+    res.redirect("/");
   }
-  
 });
 
-router.post('/sp/:id/razorpay-keys',async (req,res)=>{
-  try{
-    const storeid = req.params.id
+router.post("/sp/:id/razorpay-keys", async (req, res) => {
+  try {
+    const storeid = req.params.id;
     const keys = {
-      key_id:req.body.keyid,
-      key_secret:req.body.keysecret
+      key_id: req.body.keyid,
+      key_secret: req.body.keysecret,
+    };
+    console.log(keys);
+    const store = await Store.findByIdAndUpdate(storeid, keys, { new: true });
+    if (!store) {
+      res.send("Server error");
     }
-    console.log(keys)
-    const store =  await Store.findByIdAndUpdate(storeid, keys, { new:true })
-    if (!store){
-      res.send('Server error')
+    res.send("successfully add razorpay keys");
+  } catch (err) {
+    console.log(err);
+    res.send("Server Error");
+  }
+});
+
+router.get("/sp/:id/new-plan", userlogin, async (req, res) => {
+  try {
+    const userid = req.session.userSession._id;
+    const store = await Store.findById(req.params.id);
+    if (userid == store.userID) {
+      res.render("store/create-plans", { store }); // Pass items to the Handlebars template
     }
-    res.send('successfully add razorpay keys')
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error fetching items");
+  }
+});
+
+router.post('/sp/:id/new-plan', upload.single('img'), async (req, res) => {
+  try {
+    const storeId = req.params.id; // Retrieve store ID from route parameter
+
+    // Retrieve form data
+    const planName = req.body.name;
+    const planImg = req.file ? req.file.filename : ''; // Handle uploaded image file
+    const items = [];
+
+    // Process and collect items
+    let itemIndex = 1;
+    while (req.body[`item${itemIndex}_name`]) {
+      items.push({
+        name: req.body[`item${itemIndex}_name`],
+        quantity: req.body[`item${itemIndex}_quantity`],
+      });
+      itemIndex++;
+    }
+
+    // Find the store by ID and add the new plan
+    const store = await Store.findById(storeId);
+    store.plans.push({
+      name: planName,
+      planImg: planImg,
+      items: items,
+    });
+
+    await store.save(); // Save the updated store
+    res.redirect(`/store/sp/${storeId}`); // Redirect to the store page
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error'); // Handle errors
+  }
+});
+
+router.get('/sp/:id/all-plans',userlogin, async (req,res)=>{
+  try{
+    const userid = req.session.userSession._id;
+    const id = req.params.id
+    const store = await Store.findById(id)
+    if (userid == store.userID){
+      res.render('store/all-plans',{plans:store.plans, store, user: req.session.userSession})
+    }else{
+      res.redirect('/')
+    }
   }catch(err){
     console.log(err)
-    res.send('Server Error')
+    res.send('Server error')
   }
 })
+
 module.exports = router;
