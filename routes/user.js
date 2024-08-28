@@ -234,7 +234,7 @@ router.get("/store-info", async (req, res) => {
         serverip: store.serverip,
       }));
 
-
+      
       // Render the store-info page, passing storeData and user data
       res.render("main/store-info", { user: req.session.userSession, storeData, error});
     } catch (err) {

@@ -18,6 +18,7 @@ const storeSchema = new Schema({
     {
       name:{ type: String},
       planImg:{ type: String},
+      price:{type: Number},
       items:[
         {
           name:{ type: String},
