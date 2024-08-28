@@ -1,0 +1,18 @@
+<title>Codes</title>
+<section>
+    <div class="container">
+        {{#if mess}}
+        <p>{{mess}}</p>
+        {{/if}}
+        
+        {{#if codes.length}}
+        <h1>Codes</h1>
+        {{#each codes}}
+            <h3>{{this.name}}</h3>
+            <span>{{this.code}}</span>
+        {{/each}}
+        {{else}}
+        <p>No codes available.</p>
+        {{/if}}
+    </div>
+</section>

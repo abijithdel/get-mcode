@@ -304,13 +304,15 @@ router.post("/sp/store-plan/confirmation", async (req, res) => {
         const randomIndex = Math.floor(Math.random() * characters.length);
         code += characters[randomIndex];
       }
-
+      console.log(userID);
+      
       // Create a new order for each item
       const newOrder = new Order({
         name: item.name,
         quantity: item.quantity,
         code: code,
         date: purchaseDate,
+        userId: userID
       });
 
       // Save the new order to the database

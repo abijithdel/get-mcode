@@ -6,7 +6,8 @@ var Price = require("../helper/price");
 var Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Store = require("../helper/store");
-
+const Order = require('../helper/order');
+const order = require("../helper/order");
 var instance = new Razorpay({
   key_id: "rzp_test_IWrl9K2JnNrzFm",
   key_secret: "BzyM7N0PxqV7HuIphsczNN53",
@@ -243,6 +244,25 @@ router.get("/store-info", async (req, res) => {
     }
   } else {
     res.render("main/login");
+  }
+});
+
+router.get('/codes', async (req, res) => {
+  if (req.session.login) {
+    try {
+      const codes = await Order.find({ "userId": req.session.userSession._id });
+
+      if (codes.length === 0) {
+        res.render('main/codes', { user: req.session.userSession, mess: 'Code Not Found' });
+      } else {
+        res.render('main/codes', { user: req.session.userSession, codes });
+      }
+    } catch (err) {
+      console.log(err);
+      res.send('Server error');
+    }
+  } else {
+    res.redirect('/login');
   }
 });
 
