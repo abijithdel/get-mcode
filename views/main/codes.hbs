@@ -1,15 +1,18 @@
 <title>Codes</title>
-<section>
+<section class="codes-section">
+    <h1 class="text-center">Codes</h1>
     <div class="container">
         {{#if mess}}
         <p>{{mess}}</p>
         {{/if}}
         
         {{#if codes.length}}
-        <h1>Codes</h1>
         {{#each codes}}
-            <h3>{{this.name}}</h3>
-            <span>{{this.code}}</span>
+            <div class="code">
+                <h3>{{this.name}}</h3>
+                <input type="text" value="{{this.code}}"> <button>Copy</button>
+                <span>{{this.date}}</span>
+            </div>
         {{/each}}
         {{else}}
         <p>No codes available.</p>
