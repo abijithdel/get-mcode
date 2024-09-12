@@ -10,7 +10,7 @@ const storeSchema = new Schema({
   orderId: { type: String, required: true },
   paymentId: { type: String, required: true },
   serverip: { type: String ,default:'serverip.com'},
-  port: { type: Number, default:1234},
+  port: { type: Number, default:25565},
   bgimg: { type: String, default:'default-img.png'},
   key_id: { type: String, default:'key_id'},
   key_secret: { type: String, default:'key_secret'},

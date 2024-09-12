@@ -16,6 +16,7 @@
     "express-session": "^1.18.0",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
+    "minecraft-server-util": "^5.4.4",
     "mongoose": "^8.5.3",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",

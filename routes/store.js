@@ -4,6 +4,8 @@ var Store = require("../helper/store");
 const upload = require("../config/multer");
 const crypto = require("crypto");
 const Order = require("../helper/order");
+const MinecraftServerUtil = require("minecraft-server-util");
+
 const userlogin = (req, res, nest) => {
   if (req.session.login) {
     nest();
@@ -16,17 +18,36 @@ router.get("/sp/:id", async (req, res) => {
   try {
     const storeId = req.params.id;
     const store = await Store.findById(storeId);
+    const serverIp = store.serverip
+    const serverPort = store.port
+    var online
+    var playersOnline = 0
+    var maxPlayers = 0 
+    try{
+      const status = await MinecraftServerUtil.status(serverIp, serverPort);
+      online = true
+      playersOnline = status.players.online
+      maxPlayers = status.players.max
+    }
+    catch(err){
+      online = false
+    }
+
     res.render("store/store", {
       user: req.session.userSession,
       store,
-      storeStatus: true,
       plans: store.plans,
+      online,
+      playersOnline,
+      maxPlayers
     });
   } catch (err) {
     console.log(err);
     res.send("Server error");
   }
 });
+
+
 
 router.get("/sp/:id/edit", userlogin, async (req, res) => {
   try {
@@ -266,35 +287,28 @@ router.post("/sp/store-plan/confirmation", async (req, res) => {
       return res.status(404).send({ message: "Store or plan not found" });
     }
 
-    // Use the store's key_secret for signature verification
-    const crypto = require("crypto");
-    const razorpaySecret = store.key_secret;
-
     // Verify the payment signature
     const generatedSignature = crypto
-      .createHmac("sha256", razorpaySecret)
+      .createHmac("sha256", store.key_secret)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 
     if (generatedSignature !== razorpay_signature) {
-      console.error("Invalid signature:", {
-        generatedSignature,
-        razorpay_signature,
-      });
       return res.status(400).send({ message: "Invalid signature" });
     }
 
-    // Find the plan by ID
+    // Find the plan by ID within the store
     const plan = store.plans.find((p) => p._id.toString() === planid);
 
     if (!plan) {
       return res.status(404).send({ message: "Plan not found" });
     }
 
-    // Process each item in the plan's items array
-    const purchaseDate = new Date();
+    // Generate random 10-character codes and create orders
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const purchaseDate = new Date();
+    const newOrderItems = [];
 
     for (const item of plan.items) {
       let code = "";
@@ -304,20 +318,26 @@ router.post("/sp/store-plan/confirmation", async (req, res) => {
         const randomIndex = Math.floor(Math.random() * characters.length);
         code += characters[randomIndex];
       }
-      console.log(userID);
-      
-      // Create a new order for each item
-      const newOrder = new Order({
+
+      // Collect the items for the order
+      newOrderItems.push({
         name: item.name,
         quantity: item.quantity,
-        code: code,
-        date: purchaseDate,
-        userId: userID
       });
-
-      // Save the new order to the database
-      await newOrder.save();
     }
+
+    // Create a new order with all items
+    const newOrder = new Order({
+      userId: userID,
+      code: `${characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      )}`,
+      date: purchaseDate,
+      items: newOrderItems,
+    });
+
+    // Save the new order to the database
+    await newOrder.save();
 
     res.send({ message: "Payment successful and orders processed" });
   } catch (err) {
@@ -325,6 +345,5 @@ router.post("/sp/store-plan/confirmation", async (req, res) => {
     res.status(500).send({ message: "Server error" });
   }
 });
-
 
 module.exports = router;

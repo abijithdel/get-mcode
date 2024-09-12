@@ -14,7 +14,13 @@
             <p>PORT: {{store.port}}</p>
         </div>
         <div class="online mb-5">
-            <h4>Online: </h4>
+            <h4>
+                {{#if online}}
+                Online : {{playersOnline}} / {{maxPlayers}}
+                {{else}}
+                Ofline
+                {{/if}}
+            </h4>
         </div>
     </div>
 </section>
